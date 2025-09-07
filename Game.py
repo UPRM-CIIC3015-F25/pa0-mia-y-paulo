@@ -47,7 +47,7 @@ def ball_movement():
 
     # Ball goes below the bottom boundary (missed by player)
     if ball.bottom > screen_height:
-        # Handle ball loss: update high score, reduce lives, reset ball, and restart game (reset everything if no lives left).
+        # Handle ball loss: reduce lives, reset ball, and restart game
         global high_score, lives
         if score > high_score:
             high_score = score
@@ -57,7 +57,6 @@ def ball_movement():
         start = False
         if lives <= 0:
             score = 0
-            high_score = 0
             lives = 3
         restart()  # Reset the game
 
