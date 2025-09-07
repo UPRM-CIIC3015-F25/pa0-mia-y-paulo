@@ -41,10 +41,18 @@ def ball_movement():
 
     # Ball goes below the bottom boundary (missed by player)
     if ball.bottom > screen_height:
-        # Update the high score if the current score is greater
-        global high_score
+        # Handle ball loss: update high score, reduce lives, reset ball, and restart game (reset everything if no lives left).
+        global high_score, lives
         if score > high_score:
             high_score = score
+        lives -= 1
+        ball.center = (screen_width / 2, screen_height / 2) #Reset the ball to the center of the screen and stop its movement
+        ball_speed_x, ball_speed_y = 0, 0
+        start = False
+        if lives <= 0:
+            score = 0
+            high_score = 0
+            lives = 3
         restart()  # Reset the game
 
 def player_movement():
@@ -100,6 +108,7 @@ player_speed = 0
 # Score Text setup
 score = 0
 high_score = 0 #add new scores
+lives = 3 #add lives to game
 # High Score setup
 HIGHSCORE_FILE = "highscore.txt"
 
@@ -118,6 +127,10 @@ def save_highscore(value):
 
 highscore = load_highscore()
 basic_font = pygame.font.Font('freesansbold.ttf', 32)  # Font for displaying score
+
+#Load the heart image and scale it to 25x25 pixels
+heart_img = pygame.image.load("Red heart illustration.png.jpeg.png")
+heart_img = pygame.transform.scale(heart_img, (25, 25))
 
 start = False  # Indicates if the game has started
 
@@ -159,6 +172,14 @@ while True:
 
     hs_text = basic_font.render(f'HS: {high_score}', False, lime) # add player HS
     screen.blit(hs_text, (screen_width - 120, 10)) #Display the HS
+
+    # Draw the heart icons on the screen based on the number of lives left
+    if lives >= 1:
+        screen.blit(heart_img, (10, 10))
+    if lives >= 2:
+        screen.blit(heart_img, (40, 10))
+    if lives >= 3:
+        screen.blit(heart_img, (70, 10))
 
     # Update display
     pygame.display.flip()
