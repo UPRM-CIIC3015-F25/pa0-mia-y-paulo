@@ -49,16 +49,18 @@ def ball_movement():
     if ball.bottom > screen_height:
         # Handle ball loss: reduce lives, reset ball, and restart game
         global high_score, lives
-        if score > high_score:
-            high_score = score
         lives -= 1
         ball.center = (screen_width / 2, screen_height / 2) #Reset the ball to the center of the screen and stop its movement
         ball_speed_x, ball_speed_y = 0, 0
         start = False
+
         if lives <= 0:
-            score = 0
+            # Ensure highscore saved
+            if score > highscore:
+                highscore = score
+                save_highscore(highscore)
+            restart()
             lives = 3
-        restart()  # Reset the game
 
 def player_movement():
     """
@@ -187,7 +189,7 @@ while True:
     player_text = basic_font.render(f'{score}', False, lime)  # Render player score
     screen.blit(player_text, (screen_width/2 - 15, 10))  # Display score on screen
 
-    hs_text = basic_font.render(f'HIGHSCORE: {high_score}', False, lime) # add player HS
+    hs_text = basic_font.render(f'HIGHSCORE: {highscore}', False, lime) # add player HS
     screen.blit(hs_text, (screen_width - 200, 10)) #Display the HS
 
     # Draw the heart icons on the screen based on the number of lives left
