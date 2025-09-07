@@ -26,6 +26,9 @@ def ball_movement():
             score += 1  # Increase player score
             ball_speed_y *= -1  # Reverse ball's vertical direction
             # TODO Task 6: Add sound effects HERE
+            pygame.mixer.init()
+            hit_sound = pygame.mixer.Sound("ping.wav")
+            hit_sound.play()
 
 
     # Ball collision with top boundary
@@ -69,10 +72,6 @@ def restart():
 pygame.mixer.pre_init(44100, -16, 1, 1024)
 pygame.init()
 clock = pygame.time.Clock()
-
-pygame.mixer.init()
-hit_sound = pygame.mixer.Sound("ping.wav")
-hit_sound.play()
 
 pygame.mixer.music.load("music.wav")
 pygame.mixer.music.play(-1)
