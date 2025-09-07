@@ -1,6 +1,6 @@
 import os
 import pygame, sys, random
-import random
+
 def ball_movement():
     """
     Handles the movement of the ball and collision detection with the player and screen boundaries.
@@ -96,6 +96,23 @@ player_speed = 0
 
 # Score Text setup
 score = 0
+# High Score setup
+HIGHSCORE_FILE = "highscore.txt"
+
+def load_highscore():
+    if not os.path.exists(HIGHSCORE_FILE):
+        return 0
+    try:
+        with open(HIGHSCORE_FILE, "r") as f:
+            return int(f.read().strip() or 0)
+    except:
+        return 0
+
+def save_highscore(value):
+    with open(HIGHSCORE_FILE, "w") as f:
+        f.write(str(value))
+
+highscore = load_highscore()
 basic_font = pygame.font.Font('freesansbold.ttf', 32)  # Font for displaying score
 
 start = False  # Indicates if the game has started
