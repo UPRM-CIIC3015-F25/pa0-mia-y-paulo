@@ -128,8 +128,6 @@ lives = 3 #add lives to game
 # High Score setup
 HIGHSCORE_FILE = "highscore.txt"
 
-HIGHSCORE_FILE = "highscore.txt"
-
 def load_highscore():
     if not os.path.exists(HIGHSCORE_FILE):
         return 0
@@ -180,16 +178,16 @@ while True:
     player_movement()
 
     # Visuals
-    lime = pygame.Color('lime')
+    white = pygame.Color('white')
     red = pygame.Color('red')
     screen.fill(bg_color)  # Clear screen with background color
-    pygame.draw.rect(screen, lime, player)  # Draw player paddle
+    pygame.draw.rect(screen, white, player)  # Draw player paddle
     # TODO Task 3: Change the Ball Color
     pygame.draw.ellipse(screen, ball_color, ball)  # Draw ball
-    player_text = basic_font.render(f'{score}', False, lime)  # Render player score
+    player_text = basic_font.render(f'{score}', False, white )  # Render player score
     screen.blit(player_text, (screen_width/2 - 15, 10))  # Display score on screen
 
-    hs_text = basic_font.render(f'HIGHSCORE: {highscore}', False, lime) # add player HS
+    hs_text = basic_font.render(f'HIGHSCORE: {highscore}', False, white) # add player HS
     screen.blit(hs_text, (screen_width - 200, 10)) #Display the HS
 
     # Draw the heart icons on the screen based on the number of lives left
