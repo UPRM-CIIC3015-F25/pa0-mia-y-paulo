@@ -38,6 +38,10 @@ def ball_movement():
 
     # Ball goes below the bottom boundary (missed by player)
     if ball.bottom > screen_height:
+        # Update the high score if the current score is greater
+        global high_score
+        if score > high_score:
+            high_score = score
         restart()  # Reset the game
 
 def player_movement():
@@ -96,6 +100,7 @@ player_speed = 0
 
 # Score Text setup
 score = 0
+high_score = 0 #add new scores
 # High Score setup
 HIGHSCORE_FILE = "highscore.txt"
 
@@ -152,6 +157,9 @@ while True:
     pygame.draw.ellipse(screen, lime, ball)  # Draw ball
     player_text = basic_font.render(f'{score}', False, lime)  # Render player score
     screen.blit(player_text, (screen_width/2 - 15, 10))  # Display score on screen
+
+    hs_text = basic_font.render(f'HS: {high_score}', False, lime) # add player HS
+    screen.blit(hs_text, (screen_width - 120, 10)) #Display the HS
 
     # Update display
     pygame.display.flip()
