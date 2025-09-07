@@ -1,8 +1,6 @@
 import os
-
 import pygame, sys, random
-
-
+import random
 def ball_movement():
     """
     Handles the movement of the ball and collision detection with the player and screen boundaries.
@@ -29,9 +27,6 @@ def ball_movement():
             ball_speed_y *= -1  # Reverse ball's vertical direction
             # TODO Task 6: Add sound effects HERE
 
-            pygame.mixer.init()
-            hit_sound = pygame.mixer.Sound("ping.wav")
-            hit_sound.play()
 
     # Ball collision with top boundary
     if ball.top <= 0:
@@ -70,6 +65,13 @@ def restart():
 pygame.mixer.pre_init(44100, -16, 1, 1024)
 pygame.init()
 clock = pygame.time.Clock()
+
+pygame.mixer.init()
+hit_sound = pygame.mixer.Sound("ping.wav")
+hit_sound.play()
+
+pygame.mixer.music.load("music.wav")
+pygame.mixer.music.play(-1)
 
 # Main Window setup
 screen_width = 500  # Screen width (can be adjusted)
