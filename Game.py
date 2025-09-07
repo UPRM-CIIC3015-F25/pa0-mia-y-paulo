@@ -5,7 +5,7 @@ def ball_movement():
     """
     Handles the movement of the ball and collision detection with the player and screen boundaries.
     """
-    global ball_speed_x, ball_speed_y, score, start
+    global ball_speed_x, ball_speed_y, score, start, ball_color, highscore
 
     # Move the ball
     ball.x += ball_speed_x
@@ -13,7 +13,7 @@ def ball_movement():
 
     # Start the ball movement when the game begins
     # TODO Task 5 Create a Merge Conflict
-    speed = 10
+    speed = 8
     if start:
         ball_speed_x = speed * random.choice((1, -1))  # Randomize initial horizontal direction
         ball_speed_y = speed * random.choice((1, -1))  # Randomize initial vertical direction
@@ -22,9 +22,13 @@ def ball_movement():
     # Ball collision with the player paddle
     if ball.colliderect(player):
         if abs(ball.bottom - player.top) < 10:  # Check if ball hits the top of the paddle
-            # TODO Task 2: Fix score to increase by 1
             score += 1  # Increase player score
+            if score > highscore:  # <-- aquí se actualiza el récord
+                highscore = score
+                save_highscore(highscore)
             ball_speed_y *= -1  # Reverse ball's vertical direction
+            ball_color = rand_color()
+
             # TODO Task 6: Add sound effects HERE
             pygame.mixer.init()
             hit_sound = pygame.mixer.Sound("ping.wav")
@@ -34,10 +38,12 @@ def ball_movement():
     # Ball collision with top boundary
     if ball.top <= 0:
         ball_speed_y *= -1  # Reverse ball's vertical direction
+        ball_color = rand_color()
 
     # Ball collision with left and right boundaries
     if ball.left <= 0 or ball.right >= screen_width:
         ball_speed_x *= -1
+        ball_color = rand_color()
 
     # Ball goes below the bottom boundary (missed by player)
     if ball.bottom > screen_height:
@@ -105,11 +111,22 @@ ball_speed_x = 0
 ball_speed_y = 0
 player_speed = 0
 
+# Ball color setup
+ball_color = (255, 255, 255)  # bola empieza blanca
+
+def rand_color():
+    return (
+        random.randint(50, 255),
+        random.randint(50, 255),
+        random.randint(50, 255)
+    )
 # Score Text setup
 score = 0
 high_score = 0 #add new scores
 lives = 3 #add lives to game
 # High Score setup
+HIGHSCORE_FILE = "highscore.txt"
+
 HIGHSCORE_FILE = "highscore.txt"
 
 def load_highscore():
@@ -126,7 +143,8 @@ def save_highscore(value):
         f.write(str(value))
 
 highscore = load_highscore()
-basic_font = pygame.font.Font('freesansbold.ttf', 32)  # Font for displaying score
+
+basic_font = pygame.font.Font('freesansbold.ttf', 24)  # Font for displaying score
 
 #Load the heart image and scale it to 25x25 pixels
 heart_img = pygame.image.load("Red heart illustration.png.jpeg.png")
@@ -166,12 +184,12 @@ while True:
     screen.fill(bg_color)  # Clear screen with background color
     pygame.draw.rect(screen, lime, player)  # Draw player paddle
     # TODO Task 3: Change the Ball Color
-    pygame.draw.ellipse(screen, lime, ball)  # Draw ball
+    pygame.draw.ellipse(screen, ball_color, ball)  # Draw ball
     player_text = basic_font.render(f'{score}', False, lime)  # Render player score
     screen.blit(player_text, (screen_width/2 - 15, 10))  # Display score on screen
 
-    hs_text = basic_font.render(f'HS: {high_score}', False, lime) # add player HS
-    screen.blit(hs_text, (screen_width - 120, 10)) #Display the HS
+    hs_text = basic_font.render(f'HIGHSCORE: {high_score}', False, lime) # add player HS
+    screen.blit(hs_text, (screen_width - 200, 10)) #Display the HS
 
     # Draw the heart icons on the screen based on the number of lives left
     if lives >= 1:
